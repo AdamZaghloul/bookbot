@@ -1,13 +1,18 @@
+from stats import count_words
+import sys
+
 def main():
-    with open("books/frankenstein.txt") as f:
+    args = sys.argv
+
+    if len(args) != 2:
+        print("Invalid input. Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
+
+    with open(args[1]) as f:
         file_contents = f.read()
     
-    report(file_contents)
+    report(file_contents, args[1])
     #print(count_chars(file_contents))
-
-def count_words(file_contents):
-    words = file_contents.split()
-    return len(words)
 
 def count_chars(file_contents):
     file_contents = file_contents.lower()
@@ -28,16 +33,18 @@ def count_chars(file_contents):
     output.sort(reverse=True, key=sort_on)
     return output 
 
-def report(file_contents):
+def report(file_contents, file_name):
     chars = count_chars(file_contents)
 
-    print("--- Begin report of books/frankenstein.txt ---")
+    print(f"--- Begin report of {file_name} ---")
+    print("----------- Word Count ----------")
     print(f"{count_words(file_contents)} words found in the document")
     print("")
+    print("----------- Character Count ----------")
 
     for char in chars:
         #print(char)
-        print(f"The '{char['letter']}' character was found {char['count']} times")
+        print(f"{char['letter']}: {char['count']}")
 
     print("--- End report ---")
 
